@@ -1,7 +1,11 @@
 package br.edu.util;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil {
@@ -17,7 +21,8 @@ public class HibernateUtil {
         try {
             Configuration cfg
                     = new Configuration();
-            
+//            JOptionPane.showMessageDialog(null, LoadPropriedade.loadProperty("servidor"));
+           
             cfg.configure("hibernate.cfg.xml");
             return cfg.buildSessionFactory();
         } catch (Throwable e) {
