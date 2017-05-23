@@ -10,7 +10,7 @@ import br.edu.util.HibernateUtil;
 public abstract class GenericDAO<T> 
 						implements DAO<T>{
 	
-	private Session sessao;
+	protected Session sessao;
 	private Transaction transacao;
 	
 	public boolean salvar(T t) {
@@ -61,9 +61,4 @@ public abstract class GenericDAO<T>
 		}
 	}
 	
-	public List<T> listar() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
