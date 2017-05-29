@@ -22,6 +22,7 @@ public class TListaCliente extends JFrame {
 
 	private JPanel contentPane;
 	private JTable tbClientes;
+	private JButton btnEditar;
 
 	/**
 	 * Launch the application.
@@ -38,16 +39,14 @@ public class TListaCliente extends JFrame {
 			}
 		});
 	}
+	
 
 	/**
 	 * Create the frame.
 	 */
 	public TListaCliente() {
 		initComponents();
-		ClienteDAO clienteDAO = new ClienteDAO();
-		ClienteTableModel ctm = 
-				new ClienteTableModel(clienteDAO.listar());
-		tbClientes.setModel(ctm);
+		atualizaTabelaCliente();
 		
 		JButton btnExcluir = new JButton("Excluir");
 		btnExcluir.addActionListener(new ActionListener() {
@@ -62,11 +61,32 @@ public class TListaCliente extends JFrame {
 									ctm.getValueAt(tbClientes.getSelectedRow());
 					ClienteDAO clienteDAO = new ClienteDAO();
 					clienteDAO.deletar(clienteASerExcluido);
+					atualizaTabelaCliente();
 				}
 			}
 		});
-		btnExcluir.setBounds(221, 285, 117, 25);
+		btnExcluir.setBounds(218, 261, 117, 25);
 		contentPane.add(btnExcluir);
+		
+		btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(tbClientes.getSelectedRow()<0){
+					JOptionPane.showMessageDialog(null, 
+							"Selecione uma linha!");
+				} else {
+					ClienteTableModel ctm = 
+							(ClienteTableModel) tbClientes.getModel();
+					Cliente clienteASerEditado = 
+							ctm.getValueAt(tbClientes.getSelectedRow());
+					TCadCliente tcc = new TCadCliente(clienteASerEditado);
+					tcc.setVisible(true);
+					atualizaTabelaCliente();
+				}
+			}
+		});
+		btnEditar.setBounds(350, 261, 117, 25);
+		contentPane.add(btnEditar);
 	}
 	
 	public void initComponents(){
@@ -80,6 +100,13 @@ public class TListaCliente extends JFrame {
 		tbClientes = new JTable();
 		tbClientes.setBounds(12, 24, 404, 214);
 		contentPane.add(tbClientes);
+	}
+	
+	public void atualizaTabelaCliente(){
+		ClienteDAO clienteDAO = new ClienteDAO();
+		ClienteTableModel ctm = 
+				new ClienteTableModel(clienteDAO.listar());
+		tbClientes.setModel(ctm);
 	}
 }
 

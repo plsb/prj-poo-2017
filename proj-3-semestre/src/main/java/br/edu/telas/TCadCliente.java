@@ -21,7 +21,8 @@ public class TCadCliente extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField tfNome;
-
+	private Cliente cliente;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -42,6 +43,20 @@ public class TCadCliente extends JFrame {
 	 * Create the frame.
 	 */
 	public TCadCliente() {
+		initComponents();
+	}
+	
+	public TCadCliente(Cliente cliente){
+		initComponents();
+		this.cliente = cliente;
+		tfNome.setText(cliente.getNome());
+	}
+	
+	public void limpaCampos(){
+		tfNome.setText("");
+	}
+	
+	public void initComponents(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -57,12 +72,18 @@ public class TCadCliente extends JFrame {
 		JButton btSalvar = new JButton("New button");
 		btSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Cliente cliente = new Cliente();
+				if(cliente.getId()==null){
+					cliente = new Cliente();
+				}
+				
 				cliente.setNome(tfNome.getText().toString());
 				
 				ClienteDAO clienteDAO = new ClienteDAO();
-				clienteDAO.salvar(cliente);
-				
+				if(cliente.getId()==null){
+					clienteDAO.salvar(cliente);
+				} else {
+					clienteDAO.editar(cliente);
+				}
 				limpaCampos();
 				JOptionPane.showMessageDialog(null, 
 						"Cliente cadastrado com sucesso!");
@@ -70,10 +91,6 @@ public class TCadCliente extends JFrame {
 		});
 		btSalvar.setBounds(12, 183, 117, 25);
 		contentPane.add(btSalvar);
-	}
-	
-	public void limpaCampos(){
-		tfNome.setText("");
 	}
 }
 
